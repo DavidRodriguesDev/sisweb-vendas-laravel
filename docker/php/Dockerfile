@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM php:8.4-fpm
 
 RUN apt-get update && apt-get install -y \
     git \
@@ -7,18 +7,25 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
+    libpq-dev \
     zip \
     unzip \
     libcurl4-openssl-dev \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd curl zip dom xml \
+    nodejs \
+    npm \
+    && docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd curl zip dom xml \
     && pecl install redis && docker-php-ext-enable redis \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 WORKDIR /var/www/html
 
-RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html/storage \
-    && chmod -R 775 /var/www/html/bootstrap/cache
+COPY . .
+
+RUN mkdir -p storage bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
+
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+CMD ["/docker-entrypoint.sh"]

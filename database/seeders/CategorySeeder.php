@@ -1,10 +1,7 @@
 <?php
-
 namespace Database\Seeders;
-
 use App\Models\Category;
 use Illuminate\Database\Seeder;
-
 class CategorySeeder extends Seeder
 {
     public function run(): void
@@ -17,9 +14,8 @@ class CategorySeeder extends Seeder
             ['name' => 'Roupas', 'description' => 'Vestuário em geral'],
             ['name' => 'Alimentos', 'description' => 'Produtos alimentícios'],
         ];
-
         foreach ($categories as $category) {
-            Category::create($category);
+            Category::firstOrCreate(['name' => $category['name']], $category);
         }
     }
 }

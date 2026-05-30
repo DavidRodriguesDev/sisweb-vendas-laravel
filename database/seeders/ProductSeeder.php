@@ -1,10 +1,7 @@
 <?php
-
 namespace Database\Seeders;
-
 use App\Models\Product;
 use Illuminate\Database\Seeder;
-
 class ProductSeeder extends Seeder
 {
     public function run(): void
@@ -21,9 +18,8 @@ class ProductSeeder extends Seeder
             ['name' => 'Vaso de Planta Decorativo', 'sku' => 'CASA-001', 'price' => 49.90, 'cost' => 20.00, 'stock' => 80, 'min_stock' => 10, 'category_id' => 3],
             ['name' => 'Fone de Ouvido Bluetooth', 'sku' => 'ELE-002', 'price' => 199.90, 'cost' => 80.00, 'stock' => 60, 'min_stock' => 8, 'category_id' => 1],
         ];
-
         foreach ($products as $product) {
-            Product::create($product);
+            Product::firstOrCreate(['sku' => $product['sku']], $product);
         }
     }
 }

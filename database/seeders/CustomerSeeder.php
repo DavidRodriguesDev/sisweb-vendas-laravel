@@ -1,10 +1,7 @@
 <?php
-
 namespace Database\Seeders;
-
 use App\Models\Customer;
 use Illuminate\Database\Seeder;
-
 class CustomerSeeder extends Seeder
 {
     public function run(): void
@@ -16,9 +13,8 @@ class CustomerSeeder extends Seeder
             ['name' => 'Ana Costa', 'email' => 'ana@email.com', 'phone' => '(31) 99999-4444', 'document' => '321.654.987-00', 'address' => 'Rua D, 321 - Belo Horizonte/MG'],
             ['name' => 'Empresa XYZ Ltda', 'email' => 'contato@xyz.com.br', 'phone' => '(11) 3333-5555', 'document' => '12.345.678/0001-90', 'address' => 'Av F, 1000 - São Paulo/SP'],
         ];
-
         foreach ($customers as $customer) {
-            Customer::create($customer);
+            Customer::firstOrCreate(['email' => $customer['email']], $customer);
         }
     }
 }
